@@ -14,7 +14,7 @@ public class ShipController : MonoBehaviour
 		private bool play = true;
 		private int seconds;
 		private float time = 60.0f;
-		public float interval = 60.0f;
+		private float interval = 60.0f;
 		private string[] mission1 = new string[15];
 		private string[] planetNames = new string[6];
 		private Vector2[] planetCoordinates = new Vector2[6];
@@ -172,8 +172,9 @@ public class ShipController : MonoBehaviour
 				GUI.skin = skin;
 				GUIStyle ambassador = skin.GetStyle (getPlanetString ());
 				GUIStyle textBoxLong = skin.GetStyle ("TextBoxLong");
-				GUI.Box (new Rect (Screen.width - 175, 0, 175, 30), getCoordinateString (), textBoxLong);
-				GUI.Box (new Rect (0, 0, 175, 30), "Score: " + score.ToString (), textBoxLong);
+				GUIStyle textBox = skin.GetStyle ("TextBox");
+				GUI.Box (new Rect (Screen.width - 250, 0, 250, 30), getCoordinateString (), textBox);
+				GUI.Box (new Rect (0, 0, 250, 30), "Score: " + score.ToString (), textBox);
 				if (isMission) {
 						GUI.Box (new Rect (0, Screen.height - 128, 128, 128), "", ambassador);
 						if (play) {
@@ -190,22 +191,18 @@ public class ShipController : MonoBehaviour
 								}
 						} else {
 								string missionString = getMissionString ();
-								if (missionTimer < missionString.Length) {
-										GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), missionString.Substring (0, missionTimer), textBoxLong);
-								} else {
-										GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), missionString, textBoxLong);
-								}
+								getTypewrittenText (textBoxLong, missionString);
 						}
 			
 				}
 		
 				if (onMission) {
-						GUI.Box (new Rect (0, 35, 175, 30), getSecondsString (), textBoxLong);
-						GUI.Box (new Rect (Screen.width - 175, 35, 175, 30), getPlanetString () + " : " + getPlanetCoordinate (), textBoxLong);
+						GUI.Box (new Rect (0, 35, 250, 30), getSecondsString (), textBox);
+						GUI.Box (new Rect (Screen.width - 250, 35, 250, 30), getPlanetString () + " : " + getPlanetCoordinate (), textBox);
 				}
 				if (missionFailed) {
-						GUI.Box (new Rect (0, Screen.height - 128, 128, 128), "", ambassador);
-						GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), getMissionString (), textBoxLong);
+						string missionString = getMissionString ();
+						getTypewrittenText (textBoxLong, missionString);
 						if (play) {
 								int index = Random.Range (0, audioClip.Length);
 								gameObject.audio.PlayOneShot (audioClip [index]);
@@ -216,13 +213,14 @@ public class ShipController : MonoBehaviour
 				if (isImperialCuntFace && !isMission) {
 						GUIStyle imperial = skin.GetStyle ("Imperial");
 						GUI.Box (new Rect (0, Screen.height - 128, 128, 128), "", imperial);
-						GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), getImperialText (), textBoxLong);
+						getTypewrittenText (textBoxLong, getImperialText ());
 				}
 		
 				if (isBark && !isMission) {
 						GUIStyle bark = skin.GetStyle ("Bark");
 						GUI.Box (new Rect (0, Screen.height - 128, 128, 128), "", bark);
-						GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), getBarkText (), textBoxLong);
+						string missionString = getBarkText ();
+						getTypewrittenText (textBoxLong, missionString);
 				}
 		
 				if (isGameOver) {
@@ -239,6 +237,15 @@ public class ShipController : MonoBehaviour
 						if (Input.GetKey (KeyCode.N)) {
 								Application.Quit ();
 						}
+				}
+		}
+
+		void getTypewrittenText (GUIStyle style, string missionString)
+		{
+				if (missionTimer < missionString.Length) {
+						GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), missionString.Substring (0, missionTimer), style);
+				} else {
+						GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), missionString, style);
 				}
 		}
 
