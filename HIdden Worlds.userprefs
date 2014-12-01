@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ShipController.cs">
+    <Files>
+      <File FileName="Assets/Scripts/ShipController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/ShipController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/BackgroundScript.cs" Line="1" Column="1" />
+      <File FileName="../Documents/DungeonCrawlNew/Assets/Scripts/Scene 1/PlayerControllers/PlayerController.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

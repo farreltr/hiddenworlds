@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: f17cb5b1b704c4299a309a935194817f
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - skin: {fileID: 11400000, guid: 5ac111814d40a4ff2823c0d9defae01a, type: 2}
+  - gameOverText: {instanceID: 0}
+  - alienBlab: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
