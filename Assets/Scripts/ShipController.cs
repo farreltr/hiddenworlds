@@ -13,8 +13,8 @@ public class ShipController : MonoBehaviour
 		private bool isGameOver = false;
 		private bool play = true;
 		private int seconds;
-		private float time = 10.0f;
-		public float interval = 10.0f;
+		private float time = 60.0f;
+		public float interval = 60.0f;
 		private string[] mission1 = new string[15];
 		private string[] planetNames = new string[6];
 		private Vector2[] planetCoordinates = new Vector2[6];
@@ -33,14 +33,14 @@ public class ShipController : MonoBehaviour
 		private bool isNext = false;
 		private bool isWin = false;
 		private string winText;
-		private int imperialTimer = 0;
-		private int planetTimer = 5;
+		private int imperialTimer = 3;
+		private int planetTimer = 3;
 		private int delay = 3;
 		public AudioClip[] audioClip;
 		public AudioClip music;
 		private string[] barks = new string[10];
 		private bool isBark = false;
-		private int timer = 0;
+		private int timer = 3;
 		private string currentBark;
 	
 		void Update ()
@@ -100,7 +100,6 @@ public class ShipController : MonoBehaviour
 			
 						if (seconds == planetTimer) {
 								discoverable = false;
-								print ("setting discoverable back to false. planetTimer : " + planetTimer.ToString ());
 						}
 			
 			
@@ -303,8 +302,7 @@ public class ShipController : MonoBehaviour
 		void OnTriggerEnter2D (Collider2D other)
 		{
 				if (other.gameObject.tag == getPlanetString ()) {
-						planetTimer = seconds - 5;
-						print ("Planet timer set at : " + planetTimer.ToString () + " Seconds : " + seconds.ToString ());
+						planetTimer = seconds - delay;
 						discoverable = true;
 				}
 		
@@ -314,7 +312,7 @@ public class ShipController : MonoBehaviour
 				}
 		
 				if (other.gameObject.tag == "bark") {
-						timer = seconds - 5;
+						timer = seconds - delay;
 						isBark = true;
 				}
 		
