@@ -42,6 +42,11 @@ public class ShipController : MonoBehaviour
 		private bool isBark = false;
 		private int timer = 3;
 		private string currentBark;
+		private bool isFirst = true;
+		public float charsPerSecond = 1; // speed of typewriter
+		private int missionTimeIndex = 0;
+		private int missionTimer = 0;
+		private float missionTime = 0f;
 	
 		void Update ()
 		{
@@ -77,6 +82,7 @@ public class ShipController : MonoBehaviour
 												planet.GetComponent<SpriteRenderer> ().enabled = true;
 												planet.GetComponent<CircleCollider2D> ().enabled = true;
 												isMission = true;
+												resetTime ();
 												play = true;
 												onMission = false;
 												planetIdx++;
@@ -107,6 +113,8 @@ public class ShipController : MonoBehaviour
 								isMission = false;
 								onMission = true;
 								nextIdx++;
+								isFirst = false;
+								missionTime = 0.0f;
 						}
 			
 						if (Input.anyKey == false) {
@@ -128,6 +136,12 @@ public class ShipController : MonoBehaviour
 										nextIdx++;
 								}
 						}
+
+						if (isGenerateText ()) {
+								missionTime += Time.deltaTime;
+								missionTimer = Mathf.FloorToInt (missionTime * 50.0f);
+								missionTimeIndex = Mathf.FloorToInt (missionTime);
+						}
 				}
 		
 				if (nextIdx == 10 || nextIdx == 11) {
@@ -139,6 +153,16 @@ public class ShipController : MonoBehaviour
 						winText = "Congratulations! You managed to score : " + score.ToString ();
 				}
 		
+		}
+
+		bool isGenerateText ()
+		{
+				return isMission || missionFailed || isImperialCuntFace || isBark;
+		}
+
+		void resetTime ()
+		{
+				time = 0;
 		}
 	
 	
@@ -152,12 +176,26 @@ public class ShipController : MonoBehaviour
 				GUI.Box (new Rect (0, 0, 175, 30), "Score: " + score.ToString (), textBoxLong);
 				if (isMission) {
 						GUI.Box (new Rect (0, Screen.height - 128, 128, 128), "", ambassador);
-						GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), getMissionString (), textBoxLong);
 						if (play) {
 								int index = Random.Range (0, audioClip.Length);
 								gameObject.audio.PlayOneShot (audioClip [index]);
 								play = false;
-						}			
+						}	
+						if (isFirst && missionTimeIndex > 5) {
+								string reminderText = getReminderText ();
+								if (missionTimer / 300 < 2 && missionTimer % 300 < reminderText.Length) {
+										GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), reminderText.Substring (0, missionTimer % 300), textBoxLong);
+								} else {
+										GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), reminderText, textBoxLong);
+								}
+						} else {
+								string missionString = getMissionString ();
+								if (missionTimer < missionString.Length) {
+										GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), missionString.Substring (0, missionTimer), textBoxLong);
+								} else {
+										GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), missionString, textBoxLong);
+								}
+						}
 			
 				}
 		
@@ -203,7 +241,7 @@ public class ShipController : MonoBehaviour
 						}
 				}
 		}
-	
+
 		string getCoordinateString ()
 		{
 				int currentCoordinateX = Mathf.FloorToInt (transform.position.x);
@@ -236,16 +274,6 @@ public class ShipController : MonoBehaviour
 		string getBarkText ()
 		{
 				return currentBark;
-		}
-	
-		void generateAmbassadorText (GUIStyle ambassador, GUIStyle style, string text)
-		{
-				GUI.skin = skin;
-				GUIStyle empty = skin.GetStyle ("empty");
-				GUI.Box (new Rect (0, Screen.height - 128, 128, 128), "", ambassador);
-				GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), "", style);
-				GUI.Box (new Rect (144, Screen.height - 64, Screen.width - 144, 64), text, empty);
-		
 		}
 	
 		void setText ()
@@ -287,6 +315,12 @@ public class ShipController : MonoBehaviour
 				planetNames [5] = planetNames [0];
 		
 		}
+
+		string getReminderText ()
+		{
+				string reminder = "Remember to press the Star Pinger And Comms Equipment button (or S.P.A.C.E.) to locate and talk with your destination planet once you get to their approximate coordinates.";
+				return reminder;
+		}
 	
 		void setPlanetCoordinates ()
 		{
@@ -298,7 +332,7 @@ public class ShipController : MonoBehaviour
 				planetCoordinates [5] = new Vector2 (0, 0);
 		
 		}
-	
+
 		void OnTriggerEnter2D (Collider2D other)
 		{
 				if (other.gameObject.tag == getPlanetString ()) {
