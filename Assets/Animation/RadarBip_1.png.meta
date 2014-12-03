@@ -2,13 +2,16 @@ fileFormatVersion: 2
 guid: ff56e507d65ae42d78a165ac0a1e0876
 TextureImporter:
   fileIDToRecycleName:
-    21300000: RadarBip_1_0
+    21300000: start
     21300002: RadarBip_1_1
     21300004: RadarBip_1_2
     21300006: RadarBip_1_3
     21300008: RadarBip_1_4
     21300010: RadarBip_1_5
     21300012: RadarBip_1_6
+    21300014: last
+    21300016: RadarBip_1_0
+    21300018: RadarBip_1_7
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -58,7 +61,7 @@ TextureImporter:
         width: 152
         height: 152
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: RadarBip_1_1
       rect:
@@ -68,7 +71,7 @@ TextureImporter:
         width: 152
         height: 152
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: RadarBip_1_2
       rect:
@@ -78,7 +81,7 @@ TextureImporter:
         width: 152
         height: 152
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: RadarBip_1_3
       rect:
@@ -88,7 +91,7 @@ TextureImporter:
         width: 152
         height: 152
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: RadarBip_1_4
       rect:
@@ -98,7 +101,7 @@ TextureImporter:
         width: 152
         height: 152
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: RadarBip_1_5
       rect:
@@ -108,7 +111,7 @@ TextureImporter:
         width: 152
         height: 152
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: RadarBip_1_6
       rect:
@@ -118,7 +121,17 @@ TextureImporter:
         width: 152
         height: 152
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: RadarBip_1_7
+      rect:
+        serializedVersion: 2
+        x: 1064
+        y: 0
+        width: 152
+        height: 152
+      alignment: 0
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

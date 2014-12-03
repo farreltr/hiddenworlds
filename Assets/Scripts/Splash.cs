@@ -7,8 +7,8 @@ public class Splash : MonoBehaviour
 		private float time = 0.0f;
 		private int seconds = 0;
 		public GUISkin skin;
-		private float width = Screen.width / 2 - 124;
-		private float height = Screen.height / 2 + 40;
+		private float x = 234f;
+		private float y = 244f;
 
 
 	
@@ -28,9 +28,9 @@ public class Splash : MonoBehaviour
 				GUIStyle splash1 = skin.GetStyle ("splash1");
 				GUIStyle splash2 = skin.GetStyle ("splash2");
 				if (seconds % 2 == 0) {
-						GUI.Box (new Rect (width, height, 248, 64), "", splash1);
+						GUI.Box (new Rect (x, y, 132 * 1.3f, 36 * 1.3f), "", splash1);
 				} else {
-						GUI.Box (new Rect (width, height, 248, 64), "", splash2);
+						GUI.Box (new Rect (x, y, 132 * 1.3f, 36 * 1.3f), "", splash2);
 				}
 				
 		}

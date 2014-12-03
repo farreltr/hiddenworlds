@@ -42,11 +42,13 @@ public class ShipController : MonoBehaviour
 		private bool isBark = false;
 		private int timer = 3;
 		private string currentBark;
-		private bool isFirst = true;
 		public float charsPerSecond = 1; // speed of typewriter
 		private int missionTimeIndex = 0;
 		private int missionTimer = 0;
 		private float missionTime = 0f;
+		private bool isReminder = false;
+		private int count = 0;
+		private Animator animator;
 	
 		void Update ()
 		{
@@ -82,6 +84,8 @@ public class ShipController : MonoBehaviour
 												planet.GetComponent<SpriteRenderer> ().enabled = true;
 												planet.GetComponent<CircleCollider2D> ().enabled = true;
 												isMission = true;
+												isImperialCuntFace = false;
+												isBark = false;
 												resetTime ();
 												play = true;
 												onMission = false;
@@ -108,17 +112,25 @@ public class ShipController : MonoBehaviour
 								discoverable = false;
 						}
 			
-			
 						if (isMission && Input.GetKey (KeyCode.Return)) {
+								count++;
+								if (count == 1) {
+										isReminder = true;
+								}
+								if (count == 2) {
+										isReminder = false;
+								}
 								isMission = false;
 								onMission = true;
 								nextIdx++;
-								isFirst = false;
 								missionTime = 0.0f;
 						}
-			
 						if (Input.anyKey == false) {
-								gameObject.GetComponent<Animator> ().SetTrigger ("idle");
+								animator = gameObject.GetComponent<Animator> ();
+								bool isName = gameObject.GetComponent<Animator> ().GetCurrentAnimatorStateInfo (0).IsName ("move");
+								if (isName) {
+										gameObject.GetComponent<Animator> ().SetTrigger ("idle");
+								}
 						}
 			
 						if (onMission) {
@@ -130,11 +142,18 @@ public class ShipController : MonoBehaviour
 								seconds = Mathf.FloorToInt (time);
 								if (seconds < 1) {
 										missionFailed = true;
+										isImperialCuntFace = false;
+										isBark = false;
 										onMission = false;
 										isMission = false;
 										play = true;
+										isWin = false;
 										nextIdx++;
 								}
+						}
+
+						if (seconds == 50) {
+								isReminder = false;
 						}
 
 						if (isGenerateText ()) {
@@ -148,8 +167,11 @@ public class ShipController : MonoBehaviour
 						isGameOver = true;
 						isWin = true;
 						onMission = false;
-						isMission = true;
+						isMission = false;
+						isImperialCuntFace = false;
+						isBark = false;
 						play = true;
+						missionFailed = false;
 						winText = "Congratulations! You managed to score : " + score.ToString ();
 				}
 		
@@ -157,7 +179,7 @@ public class ShipController : MonoBehaviour
 
 		bool isGenerateText ()
 		{
-				return isMission || missionFailed || isImperialCuntFace || isBark;
+				return isMission || missionFailed || isImperialCuntFace || isBark || isReminder;
 		}
 
 		void resetTime ()
@@ -182,18 +204,15 @@ public class ShipController : MonoBehaviour
 								gameObject.audio.PlayOneShot (audioClip [index]);
 								play = false;
 						}	
-						if (isFirst && missionTimeIndex > 5) {
-								string reminderText = getReminderText ();
-								if (missionTimer / 300 < 2 && missionTimer % 300 < reminderText.Length) {
-										GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), reminderText.Substring (0, missionTimer % 300), textBoxLong);
-								} else {
-										GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), reminderText, textBoxLong);
-								}
-						} else {
-								string missionString = getMissionString ();
-								getTypewrittenText (textBoxLong, missionString);
-						}
+						string missionString = getMissionString ();
+						typewriteText (textBoxLong, missionString);
 			
+				}
+
+				if (isReminder) {
+						GUI.Box (new Rect (0, Screen.height - 128, 128, 128), "", ambassador);
+						string reminderText = getReminderText ();
+						typewriteText (textBoxLong, reminderText);
 				}
 		
 				if (onMission) {
@@ -201,26 +220,29 @@ public class ShipController : MonoBehaviour
 						GUI.Box (new Rect (Screen.width - 250, 35, 250, 30), getPlanetString () + " : " + getPlanetCoordinate (), textBox);
 				}
 				if (missionFailed) {
-						string missionString = getMissionString ();
-						getTypewrittenText (textBoxLong, missionString);
+						GUI.Box (new Rect (0, Screen.height - 128, 128, 128), "", ambassador);
+						GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), getMissionString (), textBoxLong);
 						if (play) {
 								int index = Random.Range (0, audioClip.Length);
 								gameObject.audio.PlayOneShot (audioClip [index]);
 								play = false;
 						}	
 						isGameOver = true;
+						isImperialCuntFace = false;
+						isBark = false;
+						onMission = false;
 				}
 				if (isImperialCuntFace && !isMission) {
 						GUIStyle imperial = skin.GetStyle ("Imperial");
 						GUI.Box (new Rect (0, Screen.height - 128, 128, 128), "", imperial);
-						getTypewrittenText (textBoxLong, getImperialText ());
+						typewriteText (textBoxLong, getImperialText ());
 				}
 		
 				if (isBark && !isMission) {
 						GUIStyle bark = skin.GetStyle ("Bark");
 						GUI.Box (new Rect (0, Screen.height - 128, 128, 128), "", bark);
 						string missionString = getBarkText ();
-						getTypewrittenText (textBoxLong, missionString);
+						typewriteText (textBoxLong, missionString);
 				}
 		
 				if (isGameOver) {
@@ -235,12 +257,12 @@ public class ShipController : MonoBehaviour
 								Application.LoadLevel (Application.loadedLevel);	
 						}
 						if (Input.GetKey (KeyCode.N)) {
-								Application.Quit ();
+								Application.LoadLevel (0);	
 						}
 				}
 		}
 
-		void getTypewrittenText (GUIStyle style, string missionString)
+		void typewriteText (GUIStyle style, string missionString)
 		{
 				if (missionTimer < missionString.Length) {
 						GUI.Box (new Rect (128, Screen.height - 64, Screen.width - 128, 64), missionString.Substring (0, missionTimer), style);
@@ -289,13 +311,13 @@ public class ShipController : MonoBehaviour
 				mission1 [1] = "Great job kid! That’s us safe for another cycle. Here, do us a space solid and deliver these boxes of spam to Bambomm. They’re having a celebratory ‘no-dead-to-the-StarPope’ party and there ain’t no party like a boxed spam party.";
 				mission1 [2] = "Thanks for nothing, Newbie. The StarPope went on a feeding rampage instead. Seems like if we need parcels delivered, we’d have been faster flushing them down our cosmic toilet.";
 				mission1 [3] = "Excellent, the meat boxes are here. We can begin. Thanks kid. So, we’ve found a typo in the latest print run of the interspecies Kama Sutra. Turns out you should NOT do number 34 with a Gorgox. Could you bring the reprints to anyone not already dead on Spinklehill? Time is of the sexy essence...";
-				mission1 [4] = "Too late, kid. You may as well gorge on those meat boxes yourself; we’ve no use for them now.";
+				mission1 [4] = "Too late, kid. You may as well gorge on those meat boxes yourself; everyone on Bambomm died of starvation.";
 				mission1 [5] = "Great timing! I was about to stick this in that. I should have known Jimi wasn’t crying for no reason. Could you take him to the hospiworld of Yumulon to get sewn back together?";
-				mission1 [6] = "So... much... blood...";
-				mission1 [7] = "We can put him back together, but he’s gonna be a few inches smaller... Here, takes his offcuts home for dinner. ";
-				mission1 [8] = "Oh... That’s been off for too long to reattach... Soz bbz!";
+				mission1 [6] = "News reports are in from Spinklehill... So... much... blood...";
+				mission1 [7] = "We can put him back together, but he’s gonna be a few inches smaller... Here, take his offcuts home for dinner. ";
+				mission1 [8] = "So... That’s been off for too long to reattach. May as well take Jimi to the airlock and Old-Yeller-in-space him... ";
 				mission1 [9] = "Back just in time for tea; great work newbie!";
-				mission1 [10] = "Poisoned! Why did you bring us back out of date meat for dinner, newbie?";
+				mission1 [10] = "That meat will be gone off now. Don't eat it! You've aready eaten it? Oh. I hope you have your affairs in order! Soz bbz!";
 		}
 	
 		void setBarks ()
@@ -310,6 +332,8 @@ public class ShipController : MonoBehaviour
 				barks [7] = "Roads? Where we're going, we don't need roads.";
 				barks [8] = "The planetary government you are trying to reach is on another call. Please hold and we’ll try to connect you.";
 				barks [9] = "‘Out to lunch.’";
+				int index = Random.Range (0, barks.Length);
+				currentBark = barks [index];
 		}
 	
 		void setPlanetNames ()
@@ -350,11 +374,15 @@ public class ShipController : MonoBehaviour
 				if (other.gameObject.tag == "imperial") {
 						imperialTimer = seconds - delay;
 						isImperialCuntFace = true;
+						isReminder = false;
+						missionTime = 0.0f;
 				}
 		
 				if (other.gameObject.tag == "bark") {
 						timer = seconds - delay;
 						isBark = true;
+						isReminder = false;
+						missionTime = 0.0f;
 				}
 		
 		}
