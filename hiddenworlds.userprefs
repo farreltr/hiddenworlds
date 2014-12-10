@@ -1,9 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ShipController.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ShipController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Splash.cs" Line="10" Column="24" />
-      <File FileName="Assets/Scripts/ShipController.cs" Line="260" Column="33" />
+      <File FileName="Assets\Scripts\ShipController.cs" Line="430" Column="1" />
+      <File FileName="Assets\Scripts\Splash.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

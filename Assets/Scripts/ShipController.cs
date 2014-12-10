@@ -358,8 +358,8 @@ public class ShipController : MonoBehaviour
 				planetCoordinates [0] = new Vector2 (-178f, -131f);
 				planetCoordinates [1] = new Vector2 (29f, 12f);
 				planetCoordinates [2] = new Vector2 (124f, -77f);
-				planetCoordinates [3] = new Vector2 (-171f, 98f);
-				planetCoordinates [4] = new Vector2 (-14f, 11f);
+				planetCoordinates [3] = new Vector2 (-175f, 98f);
+				planetCoordinates [4] = new Vector2 (6f, -13f);
 				planetCoordinates [5] = new Vector2 (0, 0);
 		
 		}
